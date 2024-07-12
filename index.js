@@ -64,11 +64,9 @@ onValue(messageListDB, (snapshot) => {
   }
 });
 
-let DBLocations = [];
 function appendMessageToList(currentMessage) {
   let messageID = currentMessage[0];
   let messageData = currentMessage[1];
-  DBLocations.push(ref(database, `messageList/${messageID}`));
   const newElement = document.createElement("div");
 
   newElement.classList.add("message-containers");
@@ -84,7 +82,6 @@ function appendMessageToList(currentMessage) {
   messages.append(newElement);
 
   const heart = document.getElementById(`${messageID}`);
-  //   localStorage.setItem(`messageLiked${messageID}`, "true");
   heart.addEventListener("click", () => {
     if (
       localStorage.getItem(`messageLiked${messageID}`) == "false" ||
@@ -104,18 +101,4 @@ function appendMessageToList(currentMessage) {
       });
     }
   });
-}
-
-let myInterval = setInterval(clearDB, 86400000);
-
-function clearDB() {
-  for (let message of DBLocations) {
-    remove(message);
-  }
-  document.querySelectorAll(".message-containers").forEach((e) => e.remove());
-  DBLocations = [];
-  localStorage.clear();
-
-  clearInterval(myInterval);
-  myInterval = setInterval(clearDB, 86400000);
 }
